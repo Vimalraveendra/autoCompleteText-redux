@@ -1,11 +1,13 @@
 import {autoCompleteTextActionTypes} from './autoCompleteText.types'
+import {addMatchedUsers} from './autoCompleteText.utils'
 
 const INITIAL_STATE={
     usersList:[],
+    filteredList:[],
     searchText:'',
     isPending:false,
     error:"",
-    text:""
+    inputText:""
 }
 
 export const requestUsersReducer=(state=INITIAL_STATE,action={})=>{
@@ -32,7 +34,20 @@ export const requestUsersReducer=(state=INITIAL_STATE,action={})=>{
             case autoCompleteTextActionTypes.HANDLE_CHANGE:
                 return{
                     ...state,
-                    text:action.payload
+                    inputText:action.payload,
+                    filteredList:addMatchedUsers(
+                        state.filteredList,
+                        state.usersList,
+                        action.payload,
+
+                    ),
+                    
+                }
+            case autoCompleteTextActionTypes.SET_USER_NAME:
+                return{
+                    ...state,
+                    inputText:action.payload,
+                    filteredList:[]
                 }
          default:
              return state;

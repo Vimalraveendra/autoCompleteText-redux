@@ -15,6 +15,16 @@ const requestUsersFailed = error=>({
     payload:error
 })
 
+export const handleChangeText = text=>({
+    type:autoCompleteTextActionTypes.HANDLE_CHANGE,
+    payload:text
+})
+
+export const setUserName = (name)=>({
+    type:autoCompleteTextActionTypes.SET_USER_NAME,
+    payload:name
+})
+
 
 export const requestUsers= ()=>async(dispatch)=>{
     dispatch(requestUsersStart())

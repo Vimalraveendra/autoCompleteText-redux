@@ -1,63 +1,37 @@
-import React,{useState,useEffect} from 'react'
+import React,{useEffect} from 'react'
 import './App.css';
-
+import { connect } from "react-redux";
 
 import AutoCompleteText from './components/autoCompleteText/autoCompleteText.component.jsx';
-import {fetchUsers} from './api/api'
-
-function App() {
-  const [usersList,setUsersList] = useState([]);
-  const [filteredList,setFilteredList] = useState([]);
-  const [inputText,setInputText] = useState("");
-
- 
-  const changeText =(event)=>{
-    let newUsersList=filteredList;
-   let value = event.target.value;
-    if(value.length>0){
-     newUsersList= usersList.filter(user=>user.name.toLowerCase().includes(value.toLowerCase()))
-    }else{
-      newUsersList=[];
-    }
-    setInputText(value)
-    setFilteredList(newUsersList)
-  
-    
-  }
-
-const renderUsername =(name)=>{
-  setInputText(name)
-  setFilteredList([])
-}
+import {requestUsers} from './redux/autoCompleteText/autoCompleteText.actions'
 
 
-  
+
+const App=({fetchUsers}) =>{
+
+
 
   useEffect(()=>{
-    const fetchedUsers = async()=>{
-    setUsersList(await fetchUsers())
-    
-    } 
-    fetchedUsers();
-   },[])
+     fetchUsers();
+     
+   },[fetchUsers])
 
 
   return (
     <div className="App">
-     <h2>Auto Complete</h2>
-     <h4>Start Typing...</h4>
-     <div className="input-credentials">
-     <AutoCompleteText
-      inputText={inputText} 
-      changeText={changeText} 
-      users={filteredList}
-      renderUsername={renderUsername} 
-      />
-     <button>Submit</button>
-     </div>
+        <h2>Auto Complete</h2>
+        <h4>Start Typing...</h4>
+        <div className="input-field">
+            <AutoCompleteText/>
+            <button>Submit</button>
+       </div>
      
     </div>
   );
 }
 
-export default App;
+const mapDispatchToProps =dispatch=>({
+  fetchUsers:()=>dispatch(requestUsers())
+})
+
+export default connect(null,mapDispatchToProps)(App);
