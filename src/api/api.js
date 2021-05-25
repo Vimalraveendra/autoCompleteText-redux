@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 
-const fetchUsers = async()=>{
+export const fetchUsers = async()=>{
     try{
     const response = await axios.get(`https://jsonplaceholder.typicode.com/users`)
     const data = await response;
-     return data.data
+     return data.data       
 
     
    
@@ -13,5 +13,3 @@ const fetchUsers = async()=>{
     console.log(error)
    }
 }
-
-   export default fetchUsers;
