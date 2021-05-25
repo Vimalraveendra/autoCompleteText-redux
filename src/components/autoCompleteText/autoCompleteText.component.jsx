@@ -1,8 +1,12 @@
 import React from 'react';
 import "./autoCompleteText.css"
+import { connect } from "react-redux";
 
-const AutoCompleteText = ({inputText,changeText,users,renderUsername})=>{
-  users = users.sort((a,b)=>a.name.localeCompare(b.name));
+import {handleChangeText,setUserName} from '../../redux/autoCompleteText/autoCompleteText.actions'
+
+
+const AutoCompleteText = ({inputText,changeText,filteredList,renderUsername})=>{
+filteredList= filteredList.sort((a,b)=>a.name.localeCompare(b.name));
     return(
 
         <div className="input-container">
@@ -12,10 +16,10 @@ const AutoCompleteText = ({inputText,changeText,users,renderUsername})=>{
            placeholder="Name" 
            onChange={changeText} />
            {
-             users.length>0?
+             filteredList.length>0?
              <ul>
              {
-             users.map(user=>
+             filteredList.map(user=>
                <li key={user.id} 
                onClick={()=>renderUsername(user.name)}>
                {user.name}
@@ -29,5 +33,14 @@ const AutoCompleteText = ({inputText,changeText,users,renderUsername})=>{
     )
 }
 
+const mapStateToProp =({users:{inputText,filteredList}})=>({
+  inputText,
+  filteredList,
+ 
+})
+const mapDispatchToProps =dispatch=>({
+  changeText:(e)=>dispatch(handleChangeText(e.target.value)),
+  renderUsername:(name)=>dispatch(setUserName(name))
+})
 
-export default AutoCompleteText;
+export default connect(mapStateToProp,mapDispatchToProps)(AutoCompleteText);
