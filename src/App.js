@@ -3,7 +3,7 @@ import './App.css';
 
 
 import AutoCompleteText from './components/autoCompleteText/autoCompleteText.component.jsx';
-import fetchUsers from './api/api'
+import {fetchUsers} from './api/api'
 
 function App() {
   const [usersList,setUsersList] = useState([]);
@@ -40,6 +40,7 @@ const renderUsername =(name)=>{
     } 
     fetchedUsers();
    },[])
+
 
   return (
     <div className="App">
